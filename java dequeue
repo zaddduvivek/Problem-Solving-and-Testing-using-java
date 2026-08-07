@@ -1,0 +1,44 @@
+import java.util.*;
+
+public class test {
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        Deque<Integer> deque = new ArrayDeque<>();
+        HashMap<Integer, Integer> map = new HashMap<>();
+        
+        int n = in.nextInt();
+        int m = in.nextInt();
+        int maxUnique = 0;
+
+        for (int i = 0; i < n; i++) {
+            int num = in.nextInt();
+            
+            // Add element to the deque and track frequency in HashMap
+            deque.add(num);
+            map.put(num, map.getOrDefault(num, 0) + 1);
+            
+            // Once we reach a subarray window of size M
+            if (deque.size() == m) {
+                maxUnique = Math.max(maxUnique, map.size());
+                
+                // Early exit: M is the theoretical maximum possible unique numbers
+                if (maxUnique == m) {
+                    break;
+                }
+                
+                // Slide window: remove the oldest element from the front of deque
+                int first = deque.remove();
+                int count = map.get(first);
+                if (count == 1) {
+                    map.remove(first);
+                } else {
+                    map.put(first, count - 1);
+                }
+            }
+        }
+        
+        System.out.println(maxUnique);
+    }
+}
+
+
